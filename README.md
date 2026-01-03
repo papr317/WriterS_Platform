@@ -1,6 +1,6 @@
 # WriterS_Platform
 
-(img/q.png)
-(img/qq.png)
+![глв страница](img/q.png)
+![стр создания](img/qq.png)
 
 ненавижу этот проект на C# с Dapper
