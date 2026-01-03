@@ -1,0 +1,45 @@
+﻿@* 💡 Указываем, какую модель мы ожидаем (например, вашу сущность User) *@
+@model WriterS_Platform.Models.User
+
+@{
+    ViewData["Title"] = "Мой Профиль";
+}
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white">
+                    <h1 class="card-title">Профиль: @Model.NikeName</h1>
+                </div>
+                <div class="card-body">
+
+                    <h3>Основные данные</h3>
+                    <hr />
+
+                    <dl class="row">
+                        <dt class="col-sm-3">ID Пользователя:</dt>
+                        <dd class="col-sm-9">@Model.id</dd>
+
+                        <dt class="col-sm-3">Никнейм:</dt>
+                        <dd class="col-sm-9">@Model.NikeName</dd>
+
+                        <dt class="col-sm-3">Email:</dt>
+                        <dd class="col-sm-9">@Model.Email</dd>
+                    </dl>
+
+                    <h3 class="mt-4">Ваши Произведения</h3>
+                    <hr />
+
+                    @* 💡 Здесь будет код для отображения списка работ *@
+                    <p>Здесь пока пусто. Начните добавлять свои произведения!</p>
+
+                </div>
+                <div class="card-footer text-right">
+                    <a asp-controller="User" asp-action="Logout" class="btn btn-danger">Выйти</a>
+                    <a asp-controller="Work" asp-action="Create" class="btn btn-success">Добавить произведение</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

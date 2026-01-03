@@ -1,0 +1,65 @@
+﻿@model WriterS_Platform.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Регистрация";
+}
+
+<h1>Регистрация</h1>
+
+<h4>Создание нового аккаунта</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        @* Форма указывает, что отправлять данные нужно в метод Register в контроллере User *@
+        <form asp-controller="User" asp-action="Register" method="post">
+
+            @* Вывод общих ошибок валидации *@
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* ---------------------------------------- *@
+            @* Поле 1: NikeName *@
+            <div class="form-group">
+                <label asp-for="NikeName" class="control-label"></label>
+                <input asp-for="NikeName" class="form-control" />
+                @* Вывод ошибок валидации для NikeName *@
+                <span asp-validation-for="NikeName" class="text-danger"></span>
+            </div>
+
+            @* ---------------------------------------- *@
+            @* Поле 2: Email *@
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            @* ---------------------------------------- *@
+            @* Поле 3: Password (принимает чистый пароль) *@
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                @* type="password" скроет ввод *@
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            @* ---------------------------------------- *@
+            @* Поле 4: ConfirmPassword (для проверки) *@
+            <div class="form-group">
+                <label asp-for="ConfirmPassword" class="control-label"></label>
+                <input asp-for="ConfirmPassword" class="form-control" type="password" />
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
+
+            @* ---------------------------------------- *@
+            <div class="form-group">
+                <input type="submit" value="Создать Аккаунт" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

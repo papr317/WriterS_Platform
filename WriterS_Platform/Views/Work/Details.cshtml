@@ -1,0 +1,109 @@
+﻿@model WriterS_Platform.ViewModels.WorkDetailsViewModel
+
+@{
+    ViewData["Title"] = "Детали Произведения";
+}
+
+<h1>@Model.Work.Title</h1>
+
+<div>
+    <h4>@Model.Work.AuthorNikeName</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            Жанр:
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Work.Genre
+        </dd>
+        <dt class="col-sm-2">
+            Опубликовано:
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Work.PublicationDate.ToShortDateString()
+        </dd>
+        <dt class="col-sm-2">
+            Рейтинг:
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Work.AvgRating/100
+        </dd>
+        <dt class="col-sm-2">
+            Комментарии:
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Work.CommentsCount
+        </dd>
+    </dl>
+</div>
+
+<div class="mt-4">
+    <h3>Содержание:</h3>
+    <div class="work-content">
+        @Html.Raw(Model.Work.Content.Replace("\n", "<br/>"))
+    </div>
+</div>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="mt-5">
+        <h4>Оценить произведение</h4>
+        <form asp-action="AddRating" method="post">
+            <input type="hidden" asp-for="NewRating.WorkID" value="@Model.Work.WorkID" />
+            <div class="form-group d-flex align-items-center">
+                <label asp-for="NewRating.Value" class="control-label me-2">Ваша оценка (0-100):</label>
+                <input asp-for="NewRating.Value" type="number" min="0" max="100" class="form-control w-25 me-2" />
+                <button type="submit" class="btn btn-success">Оценить</button>
+            </div>
+            <span asp-validation-for="NewRating.Value" class="text-danger"></span>
+            @if (Model.CurrentUserRating != -1)
+            {
+                <p class="text-muted mt-2">Вы уже оценили это произведение на: @Model.CurrentUserRating/100</p>
+            }
+        </form>
+    </div>
+
+    <div class="mt-5">
+        <h4>Добавить комментарий</h4>
+        <form asp-action="AddComment" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="NewComment.WorkID" value="@Model.Work.WorkID" />
+            <div class="form-group">
+                <label asp-for="NewComment.Content" class="control-label">Ваш комментарий:</label>
+                <textarea asp-for="NewComment.Content" class="form-control" rows="4"></textarea>
+                <span asp-validation-for="NewComment.Content" class="text-danger"></span>
+            </div>
+            <div class="form-group mt-3">
+                <button type="submit" class="btn btn-primary">Отправить комментарий</button>
+            </div>
+        </form>
+    </div>
+}
+
+<div class="mt-5">
+    <h3>Комментарии (@Model.Comments.Count())</h3>
+    @if (Model.Comments.Any())
+    {
+        foreach (var comment in Model.Comments)
+        {
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h6 class="card-subtitle mb-2 text-muted">@comment.UserName - @comment.CommentDate.ToShortDateString()</h6>
+                    <p class="card-text">@comment.Content</p>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <p>К этому произведению пока нет комментариев.</p>
+    }
+</div>
+
+<div class="mt-5">
+    <a asp-action="Index" class="btn btn-primary">Вернуться к списку произведений</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
