@@ -18,7 +18,7 @@ namespace WriterS_Platform.ViewModels
         public string Genre { get; set; }
 
         // Дополнительные поля для отображения (например, имя автора, средний рейтинг)
-        public string AuthorNikeName { get; set; }
+        public string? AuthorNikeName { get; set; }
         public DateTime PublicationDate { get; set; }
         public int AvgRating { get; set; }
         public int CommentsCount { get; set; }

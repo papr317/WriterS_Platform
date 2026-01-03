@@ -20,13 +20,13 @@
         </div>
         <div class="col-md-3 mb-2">
             <select name="SortBy" class="form-control">
-                <option value="newest" selected="@(ViewData["CurrentSort"] == null || ViewData["CurrentSort"].ToString() == "newest")">Сначала новые</option>
-                <option value="oldest" selected="@(ViewData["CurrentSort"].ToString() == "oldest")">Сначала старые</option>
-                <option value="ratingdesc" selected="@(ViewData["CurrentSort"].ToString() == "ratingdesc")">По рейтингу (убывание)</option>
-                <option value="ratingasc" selected="@(ViewData["CurrentSort"].ToString() == "ratingasc")">По рейтингу (возрастание)</option>
-                <option value="titleasc" selected="@(ViewData["CurrentSort"].ToString() == "titleasc")">По названию (А-Я)</option>
-                <option value="titledesc" selected="@(ViewData["CurrentSort"].ToString() == "titledesc")">По названию (Я-А)</option>
-                <option value="commentsdesc" selected="@(ViewData["CurrentSort"].ToString() == "commentsdesc")">По количеству комментариев</option>
+                <option value="newest" selected="@(ViewData["CurrentSort"] == null || ViewData["CurrentSort"]?.ToString() == "newest")">Сначала новые</option>
+                <option value="oldest" selected="@(ViewData["CurrentSort"]?.ToString() == "oldest")">Сначала старые</option>
+                <option value="ratingdesc" selected="@(ViewData["CurrentSort"]?.ToString() == "ratingdesc")">По рейтингу (убывание)</option>
+                <option value="ratingasc" selected="@(ViewData["CurrentSort"]?.ToString() == "ratingasc")">По рейтингу (возрастание)</option>
+                <option value="titleasc" selected="@(ViewData["CurrentSort"]?.ToString() == "titleasc")">По названию (А-Я)</option>
+                <option value="titledesc" selected="@(ViewData["CurrentSort"]?.ToString() == "titledesc")">По названию (Я-А)</option>
+                <option value="commentsdesc" selected="@(ViewData["CurrentSort"]?.ToString() == "commentsdesc")">По количеству комментариев</option>
             </select>
         </div>
         <div class="col-md-2 mb-2">
@@ -36,26 +36,33 @@
     </div>
 </form>
 
-<div class="row">
-    @foreach (var work in Model.Items)
-    {
-        <div class="col-md-4 mb-4">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">@work.Title</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">@work.Genre</h6>
-                    <p class="card-text">Автор: @work.AuthorNikeName</p>
-                    <p class="card-text"><small class="text-muted">Опубликовано: @work.PublicationDate.ToShortDateString()</small></p>
-                    <p class="card-text">Рейтинг: @work.AvgRating/100</p>
-                    <p class="card-text">Комментарии: @work.CommentsCount</p>
-                    <a asp-action="Details" asp-route-id="@work.WorkID" class="btn btn-primary">Читать</a>
+@if (Model != null && Model.Items != null && Model.Items.Any())
+{
+    <div class="row">
+        @foreach (var work in Model.Items)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@work.Title</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@work.Genre</h6>
+                        <p class="card-text">Автор: @work.AuthorNikeName</p>
+                        <p class="card-text"><small class="text-muted">Опубликовано: @work.PublicationDate.ToShortDateString()</small></p>
+                        <p class="card-text">Рейтинг: @work.AvgRating/100</p>
+                        <p class="card-text">Комментарии: @work.CommentsCount</p>
+                        <a asp-action="Details" asp-route-id="@work.WorkID" class="btn btn-primary">Читать</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <p>Произведения не найдены.</p>
+}
 
-@if (Model.TotalPages > 1)
+@if (Model != null && Model.TotalPages > 1)
 {
     <nav aria-label="Page navigation example">
         <ul class="pagination">

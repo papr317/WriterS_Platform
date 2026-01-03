@@ -61,6 +61,7 @@ public class WorkController : Controller
     {
         if (ModelState.IsValid)
         {
+            var errors = ModelState.Values.SelectMany(v => v.Errors);
             var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userIdString) || !int.TryParse(userIdString, out int authorId))
             {

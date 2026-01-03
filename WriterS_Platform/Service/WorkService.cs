@@ -102,11 +102,12 @@ namespace WriterS_Platform.Services
                 parameters.Add("SearchTerm", searchTerm);
                 parameters.Add("Genre", genre);
 
-                return await connection.QuerySingleAsync<int>(
+                var count = await connection.QuerySingleOrDefaultAsync<int?>(
                     "pGetTotalWorksCount",
                     parameters,
                     commandType: System.Data.CommandType.StoredProcedure
                 );
+                return count ?? 0;
             }
         }
         public async Task<WorkViewModel> GetWorkByIdAsync(int id)
